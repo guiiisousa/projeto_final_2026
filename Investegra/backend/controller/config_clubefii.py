@@ -1,16 +1,36 @@
-import bs4
-import requests
+# import bs4 as BeautifulSoup
+# import csv
+# import cloudscraper
 
-url = 'https://www.clubefii.com.br/fundo_imobiliario_lista'
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-}
-response = requests.get(url, headers=headers)
+# def GetDadosClubefii():
+#     url = 'https://www.clubefii.com.br/fundo_imobiliario_lista'
+    
+#     scraper = cloudscraper.create_scraper()
+#     response = scraper.get(url)
 
-def RespostaPag():
-    if response.status_code == 200:
-        print("Página carregada com sucesso!")
-    else:
-        print(f"Falha ao acessar. Código: {response.status_code}")
-
-RespostaPag()
+#     if response.status_code == 200:
+#         print("Página carregada com sucesso!")
+#         soup = BeautifulSoup.BeautifulSoup(response.text, 'html.parser')
+#         table = soup.find('table', {'id': 'fii-table'})
+        
+#         if table:
+#             rows = table.find_all('tr')[1:]  # Ignorar o cabeçalho
+#             data = []
+            
+#             for row in rows:
+#                 cols = row.find_all('td')
+#                 cols = [col.text.strip() for col in cols]
+#                 data.append(cols)
+            
+#             # Salvar os dados em um arquivo CSV
+#             with open('clubefii_data.csv', 'w', newline='', encoding='utf-8') as f:
+#                 writer = csv.writer(f)
+#                 writer.writerow(['Código', 'Nome', 'Setor', 'Preço', 'P/VP', 'DY', 'Variação'])
+#                 writer.writerows(data)
+            
+#             print("Dados do Clubefii salvos com sucesso!")
+#         else:
+#             print("Tabela de resultados não encontrada.")
+#     else:
+#         print(f"Erro: {response.status_code}")
+        
