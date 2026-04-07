@@ -17,22 +17,27 @@ def GetAcoes():
         soup = BeautifulSoup.BeautifulSoup(acesso.response_ações.text, 'html.parser')
         table = soup.find('table', {'id': 'resultado'})
         
-        print(soup)
-        
         if table:
-            rows = table.find_all('tr')[1:]  # Ignorar o cabeçalho
+            rows = table.find_all('tr')[1:] 
             data = []
             
             for row in rows:
                 cols = row.find_all('td')
                 cols = [col.text.strip() for col in cols]
                 data.append(cols)
-           
-            # Salvar os dados em um arquivo CSV
+    
             with open(f'Investegra/env/ações/Dados_Acoes.csv', 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['Código', 'Empresa', 'Setor', 'Preço', 'P/L', 'P/VP', 'ROE', 'DY'])
+                writer.writerow(['Código', 'Cotação', 'P/L', 'P/VP', 'RSR', 'DY', 'P/Ativo', 'P/Cap.Giro', 'P/EBIT', 'P/ACL', 'EV/EBITDA', 'EV/EBIT', 'Mrg.Liq', 'Lig.Corr', 'ROIC', 'ROE', 'Liquidez 2 meses', 'Patrimonio Líquido', 'Dív. Bruta/Patrimonio', 'Cresc. Rec. 5a'])
                 writer.writerows(data)
+                
+            # with open('Investegra/env/ações/Dados_Acoes.csv', 'r', encoding='utf-8') as f:
+            #     conteudo = f.read()
+
+            # conteudo = conteudo.replace(',', ';')
+
+            # with open('Investegra/env/ações/Dados_Acoes.csv', 'w', encoding='utf-8') as f:
+            #     f.write(conteudo)
             
             print("Dados do Fundamentus salvos com sucesso!")
         else:
@@ -49,7 +54,7 @@ def GetFiis():
         table = soup.find('table', {'id': 'tabelaResultado'})
         
         if table:
-            rows = table.find_all('tr')[1:]  # Ignorar o cabeçalho
+            rows = table.find_all('tr')[1:]  
             data = []
             
             for row in rows:
@@ -57,7 +62,7 @@ def GetFiis():
                 cols = [col.text.strip() for col in cols]
                 data.append(cols)
            
-            # Salvar os dados em um arquivo CSV
+            
             with open(f'Investegra/env/fiis/Dados_Fiis.csv', 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerow(['Código', 'Empresa', 'Setor', 'Preço', 'P/VP', 'DY'])
@@ -68,3 +73,40 @@ def GetFiis():
             print("Tabela de resultados não encontrada.")
     else:
         print(f"Erro: {acesso.response_fiis.status_code}")
+        
+def ReadCSV_Acoes():
+    acoes = []
+    with open(f'Investegra/env/ações/Dados_Acoes.csv', 'r', encoding='utf-8') as f:
+        
+        for linha in f.readlines()[1:]:
+            Código,Cotação,P_L,P_VP,RSR,DY,P_Ativo,P_Cap_Giro,P_EBIT,P_ACL,EV_EBITDA,EV_EBIT,Mrg_Liq,Lig_Corr,ROIC,ROE,Liquidez_2_meses,Patrimonio_Líquido,Dív_Bruta_Patrimonio,Cresc_Rec_5a,_ = linha.strip().split(',')
+            col = {
+                'Código': Código,
+                'Cotação': Cotação,
+                'P/L': P_L,
+                'P/VP': P_VP,
+                'RSR': RSR,
+                'DY': DY,
+                'P/Ativo': P_Ativo,
+                'P/Cap.Giro': P_Cap_Giro,
+                'P/EBIT': P_EBIT,
+                'P/ACL': P_ACL,
+                'EV/EBITDA': EV_EBITDA,
+                'EV/EBIT': EV_EBIT,
+                'Mrg.Liq': Mrg_Liq,
+                'Lig.Corr': Lig_Corr,
+                'ROIC': ROIC,
+                'ROE': ROE,
+                'Liquidez 2 meses': Liquidez_2_meses,
+                'Patrimonio Líquido': Patrimonio_Líquido,
+                'Dív. Bruta/Patrimonio': Dív_Bruta_Patrimonio,
+                'Cresc. Rec. 5a': Cresc_Rec_5a
+            }
+            acoes.append(col)
+            
+    return acoes
+
+def ReadCSV_Fiis():
+    with open(f'Investegra/env/fiis/Dados_Fiis.csv', 'r', encoding='utf-8') as f:
+        for linha in f.readlines():
+            print(linha.strip().split(','))
