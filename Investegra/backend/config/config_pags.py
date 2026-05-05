@@ -1,8 +1,9 @@
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 import sys
 import os
 
-from Investegra.env.classes import *
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
+
+from env.classes import *
 
 def CarregarPagAcoes():
     acesso = Acesso()
@@ -38,3 +39,4 @@ def CarregarPagBdrs():
         return "Página carregada com sucesso!"
     else: 
         print(f"Falha ao acessar. Código: {acesso.response_bdrs.status_code}")
+    

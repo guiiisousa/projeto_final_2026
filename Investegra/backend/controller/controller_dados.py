@@ -1,15 +1,17 @@
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
-
 import bs4 as BeautifulSoup
 import csv
 import sys
 import os
-import Investegra.backend.config.config_pags as config_pags
-import Investegra.backend.config.config_all as config_all
+import backend.config.config_pags as config_pags
+import backend.config.config_all as config_all
 from Investegra.env import classes
+from datetime import datetime
+import shutil
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
 acesso = classes.Acesso()
-agora = config_all.Paths.agora
+agora = config_all.Apps.agora
 
 
 def GetAcoes():
@@ -168,3 +170,22 @@ def GetBdrs():
             print("Tabela de resultados não encontrada.")
     else:
         print(f"Erro: {acesso.response_etfs.status_code}")
+        
+def ArmazenarAcoes_Mensal():
+    pasta = "Investegra/env/ações"
+    pasta_destino = "Investegra/env/ações/mes"
+    
+    for arquivo in os.listdir(pasta):
+        if arquivo.endswith(".csv"):
+        
+            data_str = arquivo.split("-")[1]
+            mes = int(data_str)
+            
+            match mes:
+                case 5 : 
+                    caminho_final = shutil.move(f'{pasta}/{arquivo}', f'{pasta_destino}/{arquivo}')
+                    print(f"Arquivo {arquivo} movido para {caminho_final}")
+                case _ :
+                    print(f"Arquivo {arquivo} não corresponde ao critério de movimentação.")
+              
+              
